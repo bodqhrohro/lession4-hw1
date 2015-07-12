@@ -12,21 +12,31 @@
 
 
 	<script type="text/javascript">
+		function reduce(array, callback, prev, _i) {
+			if (_i===undefined) {
+				_i = 0;
+			}
+			prev = callback(prev, array[_i], _i, array);
+			return _i == array.length-1 ?
+				prev :
+				reduce(array, callback, prev, _i+1)
+		}
+
 		function forEach(arr, iterator){
-			arr.reduce(function(prev, item, index, arr) {
+			reduce(arr,function(prev, item, index, arr) {
 				iterator(item, index, arr);
 			});
 		}
 
 		function map(arr, mapper){
-			return arr.reduce(function(prev, item, index, arr) {
+			return reduce(arr,function(prev, item, index, arr) {
 				prev.push(mapper(item, index, arr));
 				return prev;
 			}, []);
 		}
 
 		function filter(arr, predicate){
-			return arr.reduce(function(prev, item, index, arr) {
+			return reduce(arr,function(prev, item, index, arr) {
 				if (predicate(item, index, arr)) {
 					prev.push(item);
 				}
@@ -35,7 +45,7 @@
 		}
 
 		function some(arr, predicate){
-			return arr.reduce(function(prev, item, index, arr) {
+			return reduce(arr,function(prev, item, index, arr) {
 				if (predicate(item, index, arr)) {
 					prev = true;
 				}
@@ -44,7 +54,7 @@
 		}
 
 		function every(arr, predicate){
-			return arr.reduce(function(prev, item, index, arr) {
+			return reduce(arr,function(prev, item, index, arr) {
 				if (!predicate(item, index, arr)) {
 					prev = false;
 				}
