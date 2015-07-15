@@ -13,8 +13,11 @@
 
 	<script type="text/javascript">
 		function reduce(array, callback, prev, _i) {
-			if (_i===undefined) {
+			if (_i === undefined) {
 				_i = 0;
+				if (prev === undefined) {
+					prev = array[0];
+				}
 			}
 			prev = callback(prev, array[_i], _i, array);
 			return _i == array.length-1 ?
